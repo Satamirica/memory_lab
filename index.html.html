@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Память в цифровую эпоху: VR и игры как медиумы памяти о Холокосте</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --bg: #0d0c0b;
+    --bg2: #131210;
+    --bg3: #1a1815;
+    --bg4: #221f1c;
+    --surface: #252220;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e8e4dc;
+    --text2: #a09890;
+    --text3: #6b635a;
+    --gold: #c9a96e;
+    --gold2: #a07840;
+    --red: #c45c4a;
+    --blue: #5b8ab5;
+    --green: #5a9070;
+    --teal: #4a8a8a;
+    --serif: 'EB Garamond', Georgia, serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(13,12,11,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; gap: 2rem;
+    height: 52px;
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .nav-links { display: flex; gap: 1.5rem; margin-left: auto; }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 8rem 6vw 5rem;
+    position: relative;
+    border-bottom: 0.5px solid var(--border);
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 60% 30%, rgba(100,70,40,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(90,80,60,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-number {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.15em;
+    margin-bottom: 2rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 5.5vw, 5rem);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    max-width: 18ch;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--text2);
+    max-width: 56ch;
+    line-height: 1.65;
+    margin-bottom: 3rem;
+  }
+  .hero-thesis {
+    border-left: 2px solid var(--gold2);
+    padding: 1rem 1.5rem;
+    max-width: 64ch;
+    font-size: 1rem;
+    color: var(--text2);
+    font-style: italic;
+  }
+  .hero-thesis strong { color: var(--text); font-style: normal; }
+  .scroll-hint {
+    position: absolute; bottom: 2rem; right: 6vw;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+    writing-mode: vertical-rl;
+    text-transform: uppercase;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 6rem 6vw;
+    border-bottom: 0.5px solid var(--border);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  section.full { max-width: none; padding: 6rem 6vw; border-bottom: 0.5px solid var(--border); }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+  h2 {
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+    color: var(--gold);
+  }
+  p { margin-bottom: 1rem; color: var(--text2); }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--text); font-weight: 500; }
+  em { font-style: italic; }
+
+  /* TIMELINE */
+  .timeline-wrap { position: relative; overflow-x: auto; padding-bottom: 2rem; }
+  .timeline {
+    display: flex;
+    gap: 0;
+    position: relative;
+    min-width: 900px;
+    margin-top: 3rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 28px; left: 0; right: 0;
+    height: 0.5px;
+    background: var(--border2);
+  }
+  .tl-item {
+    flex: 1;
+    padding: 0 1rem;
+    position: relative;
+    cursor: pointer;
+  }
+  .tl-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 1.5px solid var(--text3);
+    margin: 0 auto 1rem;
+    transition: all 0.3s;
+    position: relative; z-index: 1;
+  }
+  .tl-item:hover .tl-dot,
+  .tl-item.active .tl-dot {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 12px rgba(201,169,110,0.4);
+  }
+  .tl-year {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  .tl-title {
+    font-size: 13px;
+    text-align: center;
+    color: var(--text2);
+    line-height: 1.4;
+    transition: color 0.3s;
+  }
+  .tl-item:hover .tl-title,
+  .tl-item.active .tl-title { color: var(--text); }
+  .tl-card {
+    display: none;
+    margin-top: 2.5rem;
+    padding: 1.5rem 2rem;
+    background: var(--bg3);
+    border: 0.5px solid var(--border2);
+    border-radius: 8px;
+  }
+  .tl-card.visible { display: block; animation: fadeIn 0.3s ease; }
+  .tl-card h4 { font-size: 1.1rem; color: var(--gold); margin-bottom: 0.6rem; }
+  .tl-card p { font-size: 0.92rem; }
+  .tl-card a {
+    color: var(--blue);
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 11px;
+    border-bottom: 0.5px solid currentColor;
+  }
+  .tl-card a:hover { color: var(--text); }
+
+  /* PROJECT CARDS */
+  .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem; }
+  @media (max-width: 768px) { .project-grid { grid-template-columns: 1fr; } }
+  .project-card {
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 1.75rem;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: default;
+  }
+  .project-card:hover {
+    border-color: var(--border2);
+    background: var(--bg4);
+  }
+  .project-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  .tag-vr { background: rgba(91,138,181,0.15); color: var(--blue); border: 0.5px solid rgba(91,138,181,0.3); }
+  .tag-game { background: rgba(90,144,112,0.15); color: var(--green); border: 0.5px solid rgba(90,144,112,0.3); }
+  .tag-ai { background: rgba(201,169,110,0.12); color: var(--gold); border: 0.5px solid rgba(201,169,110,0.25); }
+  .tag-edu { background: rgba(74,138,138,0.15); color: var(--teal); border: 0.5px solid rgba(74,138,138,0.3); }
+  .project-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--text); }
+  .project-card p { font-size: 0.9rem; color: var(--text2); margin-bottom: 0.8rem; }
+  .project-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+  .project-link {
+    display: inline-flex; align-items: center; gap: 4px;
+    margin-top: 0.8rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 0.5px solid currentColor;
+    transition: color 0.2s;
+  }
+  .project-link:hover { color: var(--text); }
+
+  /* COMPARISON SLIDER */
+  .compare-wrap {
+    margin-top: 2.5rem;
+    background: var(--bg3);
+    border: 0.5px solid var(--border2);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .compare-tabs {
+    display: flex;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .compare-tab {
+    flex: 1;
+    padding: 0.9rem 1rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    color: var(--text3);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .compare-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .compare-tab:hover:not(.active) { color: var(--text2); }
+  .compare-content { display: none; padding: 2rem; }
+  .compare-content.active { display: block; animation: fadeIn 0.25s ease; }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 0.5px solid var(--border);
+    align-items: start;
+  }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding-top: 0.15rem;
+  }
+  .compare-cell { font-size: 0.88rem; color: var(--text2); line-height: 1.55; }
+  .compare-cell strong { color: var(--text); }
+  .compare-head { font-family: var(--mono); font-size: 11px; color: var(--text2); letter-spacing: 0.06em; }
+
+  /* RADAR / CHART */
+  .chart-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2.5rem;
+    align-items: start;
+  }
+  @media (max-width: 768px) { .chart-wrap { grid-template-columns: 1fr; } }
+  .chart-box {
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+  }
+  .chart-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .chart-container { position: relative; height: 280px; }
+
+  /* ETHICAL COMPASS */
+  .compass-wrap {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 2rem;
+    align-items: center;
+  }
+  @media (max-width: 768px) { .compass-wrap { grid-template-columns: 1fr; } }
+  .sliders { display: flex; flex-direction: column; gap: 1.5rem; }
+  .slider-row label {
+    display: flex; justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .slider-row label span { color: var(--gold); }
+  input[type=range] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 3px;
+    background: var(--border2);
+    border-radius: 2px;
+    outline: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--gold);
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(201,169,110,0.5);
+  }
+  input[type=range]::-moz-range-thumb {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--gold);
+    cursor: pointer;
+    border: none;
+  }
+  .verdict {
+    background: var(--bg3);
+    border-radius: 10px;
+    padding: 2rem;
+    border: 0.5px solid var(--border);
+    transition: border-color 0.4s;
+  }
+  .verdict-zone {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .verdict-title {
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 0.8rem;
+    transition: color 0.4s;
+  }
+  .verdict-desc { font-size: 0.9rem; color: var(--text2); line-height: 1.65; }
+  .verdict-bar {
+    height: 3px;
+    border-radius: 2px;
+    margin-top: 1.5rem;
+    transition: all 0.4s;
+  }
+
+  /* POLL */
+  .poll-wrap {
+    background: var(--bg3);
+    border: 0.5px solid var(--border2);
+    border-radius: 10px;
+    padding: 2.5rem;
+    margin-top: 2.5rem;
+    max-width: 680px;
+  }
+  .poll-question {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
+  .poll-options { display: flex; flex-direction: column; gap: 0.8rem; }
+  .poll-btn {
+    background: var(--bg4);
+    border: 0.5px solid var(--border);
+    border-radius: 6px;
+    padding: 0.9rem 1.2rem;
+    color: var(--text2);
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .poll-btn:hover:not(:disabled) {
+    border-color: var(--border2);
+    color: var(--text);
+  }
+  .poll-bar {
+    position: absolute; left: 0; top: 0; height: 100%;
+    background: rgba(201,169,110,0.1);
+    transition: width 0.5s ease;
+    pointer-events: none;
+  }
+  .poll-btn.selected { border-color: var(--gold); color: var(--text); }
+  .poll-btn:disabled { cursor: default; }
+  .poll-result {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 0.4rem;
+    padding-left: 1.2rem;
+  }
+  .poll-total {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 1rem;
+  }
+
+  /* THEORY CAROUSEL */
+  .theory-carousel {
+    margin-top: 2.5rem;
+    position: relative;
+  }
+  .theory-slide { display: none; }
+  .theory-slide.active { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; animation: fadeIn 0.3s ease; }
+  @media (max-width: 600px) { .theory-slide.active { grid-template-columns: 1fr; } }
+  .theory-author {
+    text-align: right;
+  }
+  .theory-name {
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+  .theory-dates {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+  }
+  .theory-concept {
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--text2);
+    margin-bottom: 1rem;
+    border-left: 2px solid var(--gold2);
+    padding-left: 1rem;
+  }
+  .theory-body { font-size: 0.9rem; color: var(--text2); }
+  .carousel-nav {
+    display: flex; gap: 0.6rem; margin-top: 1.5rem; align-items: center;
+  }
+  .carousel-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--border2);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+  .carousel-dot.active { background: var(--gold); }
+  .carousel-arrow {
+    background: none;
+    border: 0.5px solid var(--border2);
+    border-radius: 4px;
+    color: var(--text2);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px 10px;
+    margin-left: auto;
+    transition: all 0.2s;
+  }
+  .carousel-arrow:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ARCHIVE / BIBLIOGRAPHY */
+  .archive-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 768px) { .archive-grid { grid-template-columns: 1fr; } }
+  .archive-item {
+    padding: 1rem 1.25rem;
+    background: var(--bg3);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    transition: border-color 0.2s;
+  }
+  .archive-item:hover { border-color: var(--border2); }
+  .archive-type {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 0.4rem;
+  }
+  .archive-title { font-size: 0.92rem; color: var(--text); margin-bottom: 0.2rem; }
+  .archive-author { font-size: 0.85rem; color: var(--text3); font-style: italic; }
+  .archive-item a {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 0.5px solid currentColor;
+    margin-top: 0.5rem;
+    transition: color 0.2s;
+  }
+  .archive-item a:hover { color: var(--text); }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 6vw;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    border-top: 0.5px solid var(--border);
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 0.5px;
+    background: var(--border);
+    margin: 3rem 0;
+  }
+
+  /* QUOTE */
+  blockquote {
+    border-left: 2px solid var(--gold2);
+    padding: 1rem 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--text2);
+    font-size: 1rem;
+  }
+  blockquote cite {
+    display: block;
+    margin-top: 0.5rem;
+    font-style: normal;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+  }
+
+  /* ETHICS ZONES VISUAL */
+  .zone-visual {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  .zone-box {
+    padding: 0.8rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    text-align: center;
+    border: 0.5px solid;
+    transition: all 0.3s;
+    opacity: 0.4;
+  }
+  .zone-box.lit { opacity: 1; }
+  .zone-legitimate { border-color: rgba(90,144,112,0.4); color: var(--green); background: rgba(90,144,112,0.08); }
+  .zone-grey { border-color: rgba(201,169,110,0.4); color: var(--gold); background: rgba(201,169,110,0.08); }
+  .zone-danger { border-color: rgba(196,92,74,0.4); color: var(--red); background: rgba(196,92,74,0.08); }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">Память & Медиум</span>
+  <div class="nav-links">
+    <a href="#timeline">Хронология</a>
+    <a href="#vr">VR</a>
+    <a href="#games">Игры</a>
+    <a href="#lab">Лаборатория</a>
+    <a href="#theory">Теория</a>
+    <a href="#archive">Архив</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-number">// 01 — введение</div>
+  <h1>Можно ли <em>играть</em> в память?</h1>
+  <p class="hero-sub">
+    Исследование VR-свидетельства и видеоигры как медиумов цифровой памяти о Холокосте.
+    История и память в цифровую эпоху — медиапроект.
+  </p>
+  <div class="hero-thesis">
+    <strong>Центральный тезис:</strong> Цифровая память о Холокосте существует в двух принципиально разных регистрах — документального свидетельства (VR, AI-архивы) и игрового нарратива. Оба медиума трансформируют память, но делают это по-разному: первый стремится к близости и аутентичности, второй — к агентности и идентификации. Вопрос не в том, какой из них «правильный», а в том, какие функции памяти они выполняют — и где проходит граница допустимого.
+  </div>
+  <span class="scroll-hint">Прокрутите вниз</span>
+</div>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="section-label">// 02 — хронология</div>
+  <h2>Цифровая память о Холокосте:<br>от архивов к иммерсии</h2>
+  <p>С начала 1990-х годов формы цифровой памяти о Холокосте прошли путь от простых баз данных до AI-диалогов с выжившими и VR-переживаний. Каждый технологический сдвиг ставил новые этические вопросы о природе свидетельства.</p>
+
+  <div class="timeline-wrap">
+    <div class="timeline" id="timeline-row">
+      <div class="tl-item" data-idx="0" onclick="showTL(0)">
+        <div class="tl-dot"></div>
+        <div class="tl-year">1994</div>
+        <div class="tl-title">USC Shoah Foundation основана Спилбергом</div>
+      </div>
+      <div class="tl-item" data-idx="1" onclick="showTL(1)">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2000-е</div>
+        <div class="tl-title">Онлайн-базы данных: Яд Вашем, Holocaust Museum</div>
+      </div>
+      <div class="tl-item" data-idx="2" onclick="showTL(2)">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2012</div>
+        <div class="tl-title">Dimensions in Testimony: AI-диалог с выжившим</div>
+      </div>
+      <div class="tl-item" data-idx="3" onclick="showTL(3)">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2017</div>
+        <div class="tl-title">The Last Goodbye — первый VR-опыт о Холокосте</div>
+      </div>
+      <div class="tl-item" data-idx="4" onclick="showTL(4)">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2018</div>
+        <div class="tl-title">Through a Glass Darkly — образовательная адвенчура</div>
+      </div>
+      <div class="tl-item" data-idx="5" onclick="showTL(5)">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2019–</div>
+        <div class="tl-title">Дискуссия о Wolfenstein и играх о Холокосте</div>
+      </div>
+      <div class="tl-item" data-idx="6" onclick="showTL(6)">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2024</div>
+        <div class="tl-title">Into Darkness: Minecraft-проект Яд Вашем</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-card" id="tl-card">
+    <h4 id="tl-card-title"></h4>
+    <p id="tl-card-text"></p>
+    <div id="tl-card-link"></div>
+  </div>
+</section>
+
+<!-- VR SECTION -->
+<section id="vr" style="max-width:1200px;margin:0 auto;padding:6rem 6vw;border-bottom:0.5px solid var(--border)">
+  <div class="section-label">// 03 — регистр первый</div>
+  <h2>VR как документальное свидетельство</h2>
+  <p>VR-проекты о Холокосте апеллируют к понятию «присутствия» — иллюзии нахождения в том же пространстве, что и события прошлого. Этот эффект рождает мощный эмоциональный отклик, но одновременно порождает острые этические вопросы.</p>
+
+  <blockquote>
+    Алисон Лэндсберг называет воспоминания, усвоенные через медиа, «протезной памятью» — они переживаются как личные, хотя возникли через технологический интерфейс.
+    <cite>— Alison Landsberg, "Prosthetic Memory: The Transformation of American Remembrance in the Age of Mass Culture" (2004)</cite>
+  </blockquote>
+
+  <div class="project-grid">
+    <div class="project-card">
+      <span class="project-tag tag-ai">AI + Архив</span>
+      <h3>Dimensions in Testimony</h3>
+      <p>USC Shoah Foundation совместно с USC Institute for Creative Technologies. Интерактивный AI-диалог с Пинхасом Гутером — выжившим в Освенциме. Система обрабатывает вопросы на естественном языке и отвечает видеозаписями из архива.</p>
+      <div class="project-meta">
+        <span>USC Shoah Foundation</span>
+        <span>2012–наст. вр.</span>
+        <span>Аудитория: школьники, музеи</span>
+      </div>
+      <a href="https://sfi.usc.edu/dit" target="_blank" class="project-link">→ Официальный сайт</a>
+    </div>
+
+    <div class="project-card">
+      <span class="project-tag tag-vr">VR</span>
+      <h3>The Last Goodbye</h3>
+      <p>VR-опыт Gabo Arora и USC Shoah Foundation. Пользователь «посещает» место заключения вместе с выжившей Рене Со-Брайтман. Распространялся на Oculus Rift и через музеи; показан в Канне (2017).</p>
+      <div class="project-meta">
+        <span>USC / Oculus</span>
+        <span>2017</span>
+        <span>Cannes XR</span>
+      </div>
+      <a href="https://www.oculus.com/experiences/rift/1532388296800975/" target="_blank" class="project-link">→ Страница проекта</a>
+    </div>
+
+    <div class="project-card">
+      <span class="project-tag tag-vr">VR + Архив</span>
+      <h3>Яд Вашем: онлайн-мемориал</h3>
+      <p>Крупнейшая цифровая база данных имён жертв Холокоста. Более 4,8 миллиона записей. Сочетает архивную функцию с мемориальной: у каждой записи — страница с фотографией, биографией, загружаемая семьёй.</p>
+      <div class="project-meta">
+        <span>Яд Вашем, Иерусалим</span>
+        <span>1993–наст. вр.</span>
+        <span>4,8 млн имён</span>
+      </div>
+      <a href="https://yvng.yadvashem.org/" target="_blank" class="project-link">→ База данных имён</a>
+    </div>
+
+    <div class="project-card">
+      <span class="project-tag tag-vr">VR</span>
+      <h3>Auschwitz: No Way Out</h3>
+      <p>Документальный VR-фильм BBC. 360° воссоздание барака в Освенциме с нарративом выжившего. Распространялся через BBC News и демонстрировался на выставках. Вызвал дискуссию о границах иммерсивного документального кино.</p>
+      <div class="project-meta">
+        <span>BBC</span>
+        <span>2016</span>
+        <span>Документальный VR</span>
+      </div>
+      <a href="https://www.bbc.co.uk/taster/pilots/auschwitz-vr" target="_blank" class="project-link">→ BBC Taster</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3 style="color:var(--text2);font-size:1rem;font-weight:400;margin-bottom:1rem;">Ключевые этические вопросы VR-свидетельства:</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+    <div style="padding:1rem 1.25rem;background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;">
+      <h3>Может ли алгоритм говорить от имени жертвы?</h3>
+      <p style="font-size:0.88rem;">В Dimensions in Testimony AI воспроизводит голос и образ человека, который больше не может контролировать это воспроизводство. Возникает концепция «цифровой неупокоенности» (digital unrest) — голос работает вечно после смерти говорящего.</p>
+    </div>
+    <div style="padding:1rem 1.25rem;background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;">
+      <h3>Эмпатия или вуайеризм?</h3>
+      <p style="font-size:0.88rem;">Виктория Грейс Уолден критикует «иллюзию присутствия» в VR о Холокосте: пользователь «выходит из опыта» обратно в безопасность, что создаёт не эмпатию, а симуляцию эмпатии — протезную память без подлинного обязательства.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GAMES SECTION -->
+<section id="games" style="max-width:1200px;margin:0 auto;padding:6rem 6vw;border-bottom:0.5px solid var(--border)">
+  <div class="section-label">// 04 — регистр второй</div>
+  <h2>Игровой нарратив:<br>агентность как проблема</h2>
+  <p>Видеоигры вводят принципиально иное измерение памяти — <strong>агентность игрока</strong>. Игрок не только свидетель, но и действующее лицо. Это рождает уникальное педагогическое потенциал и уникальный этический риск одновременно.</p>
+
+  <blockquote>
+    Если в VR вы наблюдаете — в игре вы <em>выбираете</em>. Именно этот выбор делает игру одновременно мощнейшим инструментом памяти и пространством, где память может быть извращена.
+    <cite>— По мотивам: Roger Stahl, "Digital War Play" (2010); Gonzalo Frasca, "Videogames of the Oppressed" (2001)</cite>
+  </blockquote>
+
+  <div class="project-grid">
+    <div class="project-card">
+      <span class="project-tag tag-edu">Образовательная</span>
+      <h3>Through a Glass Darkly</h3>
+      <p>Интерактивная адвенчура, разработанная совместно с организациями по сохранению памяти о Холокосте. Игрок переживает историю нескольких персонажей в разных городах Европы 1930–40-х. Используется в школах Великобритании и США.</p>
+      <div class="project-meta">
+        <span>Interactive Stories</span>
+        <span>2018</span>
+        <span>Образовательная лицензия</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-tag tag-game">Mainstream</span>
+      <h3>Wolfenstein (серия)</h3>
+      <p>Один из старейших шутеров — с 1981 года. Ставит нацистов в позицию врага, которого нужно уничтожить. Wolfenstein II (2017) вызвал острую дискуссию: насилие против нацистов как политическое высказывание в эпоху роста ультраправых. Запрещён в Германии до 2018 года.</p>
+      <div class="project-meta">
+        <span>MachineGames / Bethesda</span>
+        <span>1981–2019</span>
+        <span>18+</span>
+      </div>
+      <a href="https://www.wolfenstein.com/" target="_blank" class="project-link">→ Официальный сайт</a>
+    </div>
+
+    <div class="project-card">
+      <span class="project-tag tag-edu">Документальная игра</span>
+      <h3>1979 Revolution: Black Friday</h3>
+      <p>Хотя посвящена Иранской революции, является образцом «документальной игры» (docugame) — жанра, переносящего свидетельские практики в игровую форму. Разработана иранско-американским инди-студией iNK Stories.</p>
+      <div class="project-meta">
+        <span>iNK Stories</span>
+        <span>2016</span>
+        <span>Documentary Game</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-tag tag-edu">Новейший кейс</span>
+      <h3>Into Darkness (Яд Вашем × Minecraft)</h3>
+      <p>Яд Вашем создал официальный Minecraft-мир, посвящённый Холокосту, как образовательный инструмент для аудитории, для которой традиционные мемориальные форматы не работают. Запущен в 2024 году, вызвал острые споры.</p>
+      <div class="project-meta">
+        <span>Яд Вашем</span>
+        <span>2024</span>
+        <span>Minecraft Education</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Спектр игровых подходов к памяти</h3>
+  <p>Игры о Холокосте и нацизме занимают разные позиции на спектре от образовательного свидетельства до развлекательного экшена. Ниже — визуализация этого спектра по ключевым параметрам.</p>
+</section>
+
+<!-- COMPARISON LAB -->
+<section id="lab" style="max-width:1200px;margin:0 auto;padding:6rem 6vw;border-bottom:0.5px solid var(--border)">
+  <div class="section-label">// 05 — сравнительная лаборатория</div>
+  <h2>VR против игры:<br>сравнительный анализ</h2>
+  <p>Два медиума выполняют принципиально разные функции памяти. Сравнение по ключевым параметрам.</p>
+
+  <div class="compare-wrap">
+    <div class="compare-tabs">
+      <button class="compare-tab active" onclick="showTab('agency')">Агентность</button>
+      <button class="compare-tab" onclick="showTab('authenticity')">Аутентичность</button>
+      <button class="compare-tab" onclick="showTab('audience')">Аудитория</button>
+      <button class="compare-tab" onclick="showTab('risk')">Этический риск</button>
+      <button class="compare-tab" onclick="showTab('institution')">Институт</button>
+    </div>
+
+    <div class="compare-content active" id="tab-agency">
+      <div class="compare-row">
+        <div class="compare-label">Параметр</div>
+        <div class="compare-head">VR-свидетельство</div>
+        <div class="compare-head">Видеоигра</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Роль пользователя</div>
+        <div class="compare-cell"><strong>Пассивный свидетель.</strong> Вы наблюдаете и слушаете. Максимум — задаёте вопросы (Dimensions in Testimony). Опыт не меняется от ваших действий.</div>
+        <div class="compare-cell"><strong>Активный агент.</strong> Ваши решения меняют нарратив. В Through a Glass Darkly — вы выбираете, кому помочь. В Wolfenstein — вы убиваете.</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Позиция к событию</div>
+        <div class="compare-cell">Идентификация с жертвой или свидетелем через <em>близость</em> к их опыту.</div>
+        <div class="compare-cell">Идентификация через <em>действие</em> — иногда с позиции спасителя, иногда — с позиции уничтожающего угрозу.</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Педагогический потенциал</div>
+        <div class="compare-cell">Высокий для эмпатии и понимания масштаба трагедии.</div>
+        <div class="compare-cell">Высокий для моральных дилемм и понимания механизмов выбора в условиях давления.</div>
+      </div>
+    </div>
+
+    <div class="compare-content" id="tab-authenticity">
+      <div class="compare-row">
+        <div class="compare-label">Параметр</div>
+        <div class="compare-head">VR-свидетельство</div>
+        <div class="compare-head">Видеоигра</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Источник</div>
+        <div class="compare-cell"><strong>Реальные свидетели.</strong> Dimensions in Testimony основан на реальных интервью с выжившим. Документальная основа верифицирована архивистами.</div>
+        <div class="compare-cell"><strong>Реконструкция.</strong> Даже образовательные игры — художественные произведения. Историческая достоверность варьируется от высокой до символической.</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Проблема аутентичности</div>
+        <div class="compare-cell">«Может ли AI воспроизводить голос умершего свидетеля?» — этический вопрос без однозначного ответа.</div>
+        <div class="compare-cell">«Может ли геймплей деконтекстуализировать трагедию?» — особенно острое в жанрах экшен и шутер.</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Постпамять (Hirsch)</div>
+        <div class="compare-cell">VR создаёт «протезную» постпамять через иллюзию присутствия в пространстве события.</div>
+        <div class="compare-cell">Игра создаёт постпамять через идентификацию с персонажем, который проживает история изнутри.</div>
+      </div>
+    </div>
+
+    <div class="compare-content" id="tab-audience">
+      <div class="compare-row">
+        <div class="compare-label">Параметр</div>
+        <div class="compare-head">VR-свидетельство</div>
+        <div class="compare-head">Видеоигра</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Целевая аудитория</div>
+        <div class="compare-cell">Школьники старших классов, посетители музеев, взрослые. Доступ через музеи и образовательные институции.</div>
+        <div class="compare-cell">Геймеры (широко), школьники (образовательные игры), молодёжь, уже не охватываемая традиционными форматами.</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Доступность</div>
+        <div class="compare-cell">Ограничена: требует VR-оборудования или посещения музея. Высокий порог входа.</div>
+        <div class="compare-cell">Широкая: ПК, мобильные, консоли. Особенно Minecraft-формат охватывает поколение 2010-х.</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Вовлечённость</div>
+        <div class="compare-cell">Глубокая, но кратковременная. Опыт обычно 10–30 минут.</div>
+        <div class="compare-cell">Варьируется: от часов (Through a Glass Darkly) до минут (мобильные форматы).</div>
+      </div>
+    </div>
+
+    <div class="compare-content" id="tab-risk">
+      <div class="compare-row">
+        <div class="compare-label">Параметр</div>
+        <div class="compare-head">VR-свидетельство</div>
+        <div class="compare-head">Видеоигра</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Основной риск</div>
+        <div class="compare-cell"><strong>Симуляция сочувствия.</strong> Иллюзия «я понял» без реального обязательства. Уолден критикует: VR создаёт «туризм в трагедию».</div>
+        <div class="compare-cell"><strong>Тривиализация.</strong> Игровые механики (уровни, очки, реиграбельность) могут десенсибилизировать и превратить трагедию в развлечение.</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Коммерциализация</div>
+        <div class="compare-cell">Умеренная: проекты преимущественно некоммерческие, музейные.</div>
+        <div class="compare-cell">Высокая: коммерческие игры (Wolfenstein) получают прибыль от трагических событий.</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Смягчающие факторы</div>
+        <div class="compare-cell">Институциональный контроль, верификация источников, кураторство.</div>
+        <div class="compare-cell">Педагогический контекст, методические материалы, ограничения возраста.</div>
+      </div>
+    </div>
+
+    <div class="compare-content" id="tab-institution">
+      <div class="compare-row">
+        <div class="compare-label">Параметр</div>
+        <div class="compare-head">VR-свидетельство</div>
+        <div class="compare-head">Видеоигра</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Автор</div>
+        <div class="compare-cell">Музеи, мемориалы, академические институции (USC, Яд Вашем). Высокая институциональная легитимность.</div>
+        <div class="compare-cell">Инди-студии, крупные издатели, образовательные НКО. Степень институционализации варьируется.</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Верификация</div>
+        <div class="compare-cell">Историки и архивисты участвуют в создании. Жёсткий контроль контента.</div>
+        <div class="compare-cell">Варьируется: от серьёзной консультации (Through a Glass Darkly) до отсутствия (коммерческий экшен).</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">Место в системе памяти</div>
+        <div class="compare-cell">Расширение музейного и архивного пространства в цифровую среду.</div>
+        <div class="compare-cell">Новый, спорный, но потенциально мощный векторный медиум для поколений, не знавших Холокоста лично.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="chart-wrap" style="margin-top:3rem;">
+    <div class="chart-box">
+      <div class="chart-title">Агентность игрока vs этический риск</div>
+      <div class="chart-container">
+        <canvas id="scatterChart" role="img" aria-label="Точечная диаграмма: агентность игрока против этического риска для разных медиумов памяти">Данные о медиумах памяти по параметрам агентности и этического риска.</canvas>
+      </div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">Охват аудитории по типу медиума</div>
+      <div class="chart-container">
+        <canvas id="barChart" role="img" aria-label="Столбчатая диаграмма охвата аудитории по типам медиумов цифровой памяти">Сравнение охвата аудитории разными медиумами.</canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ETHICAL COMPASS -->
+<section id="compass" style="max-width:1200px;margin:0 auto;padding:6rem 6vw;border-bottom:0.5px solid var(--border)">
+  <div class="section-label">// 06 — этический компас</div>
+  <h2>Где проходит граница?</h2>
+  <p>Переместите слайдеры, чтобы оценить гипотетический медиапроект о Холокосте. Три параметра определяют, в какую этическую зону он попадает.</p>
+
+  <div class="compass-wrap">
+    <div class="sliders">
+      <div class="slider-row">
+        <label>Агентность пользователя <span id="v-agency">50</span></label>
+        <input type="range" min="0" max="100" value="50" id="s-agency" oninput="updateCompass()">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:3px;">
+          <span>свидетель</span><span>активный игрок</span>
+        </div>
+      </div>
+      <div class="slider-row">
+        <label>Дистанция от события <span id="v-distance">50</span></label>
+        <input type="range" min="0" max="100" value="50" id="s-distance" oninput="updateCompass()">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:3px;">
+          <span>документ / архив</span><span>фикция / фэнтези</span>
+        </div>
+      </div>
+      <div class="slider-row">
+        <label>Коммерциализация <span id="v-commercial">20</span></label>
+        <input type="range" min="0" max="100" value="20" id="s-commercial" oninput="updateCompass()">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:3px;">
+          <span>некоммерческий музей</span><span>AAA-коммерция</span>
+        </div>
+      </div>
+
+      <div class="zone-visual">
+        <div class="zone-box zone-legitimate" id="zone-leg">Легитимная память</div>
+        <div class="zone-box zone-grey" id="zone-grey">Серая зона</div>
+        <div class="zone-box zone-danger" id="zone-dan">Эксплуатация</div>
+      </div>
+    </div>
+
+    <div class="verdict" id="verdict-box">
+      <div class="verdict-zone" id="verdict-zone" style="color:var(--green)">● Легитимная память</div>
+      <div class="verdict-title" id="verdict-title">Документальное свидетельство</div>
+      <div class="verdict-desc" id="verdict-desc">Проект опирается на архивные источники, ограничивает агентность пользователя до роли свидетеля и функционирует в некоммерческом музейном контексте. Это ближайший к традиционной мемориальной практике цифровой формат.</div>
+      <div class="verdict-bar" id="verdict-bar" style="background:var(--green);width:30%"></div>
+    </div>
+  </div>
+</section>
+
+<!-- THEORY CAROUSEL -->
+<section id="theory" style="max-width:1200px;margin:0 auto;padding:6rem 6vw;border-bottom:0.5px solid var(--border)">
+  <div class="section-label">// 07 — теоретическая база</div>
+  <h2>Ключевые концепции</h2>
+  <p>Проект опирается на несколько теоретических рамок из memory studies, media theory и Holocaust studies.</p>
+
+  <div class="theory-carousel">
+    <div class="theory-slide active">
+      <div class="theory-author">
+        <div class="theory-name">Алисон Лэндсберг</div>
+        <div class="theory-dates">Alison Landsberg · 2004</div>
+      </div>
+      <div>
+        <div class="theory-concept">«Протезная память» (Prosthetic Memory)</div>
+        <div class="theory-body">
+          <p>Воспоминания, усвоенные через медиапотребление — кино, телевидение, VR — переживаются как глубоко личные, хотя человек никогда не присутствовал при событии. Лэндсберг анализирует, как массовая культура создаёт «протезы» исторической памяти, позволяющие поколениям, не знавшим Холокоста лично, ощущать с ним личную связь.</p>
+          <p>Применительно к VR: «The Last Goodbye» создаёт протезную память через иллюзию присутствия в бараке. Применительно к играм: Through a Glass Darkly создаёт её через идентификацию с персонажем, проживающим историю изнутри.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="theory-slide">
+      <div class="theory-author">
+        <div class="theory-name">Марианна Хирш</div>
+        <div class="theory-dates">Marianne Hirsch · 2012</div>
+      </div>
+      <div>
+        <div class="theory-concept">«Постпамять» (Postmemory)</div>
+        <div class="theory-body">
+          <p>Понятие описывает связь второго поколения — детей выживших — с травматическим опытом родителей. Постпамять «настолько мощна, всеохватна и настойчива», что напоминает личную память, хотя таковой не является: она передана через нарративы, образы и поведенческие паттерны.</p>
+          <p>Цифровые медиа расширяют постпамять до третьего и четвёртого поколений. VR и игры создают условия для «аффективного усвоения» чужого опыта — то, что Хирш называет «imaginative investment».</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="theory-slide">
+      <div class="theory-author">
+        <div class="theory-name">Виктория Грейс Уолден</div>
+        <div class="theory-dates">Victoria Grace Walden · 2019</div>
+      </div>
+      <div>
+        <div class="theory-concept">Критика иммерсивности в VR о Холокосте</div>
+        <div class="theory-body">
+          <p>Уолден критикует наивный энтузиазм вокруг «иллюзии присутствия» в VR-проектах. Пользователь «посещает» место трагедии, но выходит из гарнитуры обратно в безопасность — опыт структурно похож на туризм. Возникает парадокс: чем мощнее иллюзия, тем острее контраст с реальностью, в которую возвращается пользователь.</p>
+          <p>Уолден предлагает различать подлинную эмпатию (требующую длительного обязательства) и «цифровое сочувствие» — быстрое, безопасное и потенциально самодовольное.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="theory-slide">
+      <div class="theory-author">
+        <div class="theory-name">Жан Бодрийяр</div>
+        <div class="theory-dates">Jean Baudrillard · 1981</div>
+      </div>
+      <div>
+        <div class="theory-concept">Симулякр и симуляция</div>
+        <div class="theory-body">
+          <p>Бодрийяр описывает процесс, в котором знак замещает реальность — сначала отражает её, затем маскирует отсутствие, наконец становится «чистым симулякром», не имеющим референта в реальности. Для памяти о Холокосте это становится острым вопросом: когда цифровая реконструкция лагеря в VR заменяет само посещение — происходит ли работа памяти?</p>
+          <p>Игры о Холокосте — особенно жанра экшен — рискуют превратиться в «четвёртый порядок» симулякра: нацистская Германия как декорация без референта в реальной трагедии.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="theory-slide">
+      <div class="theory-author">
+        <div class="theory-name">Джеффри Шандлер</div>
+        <div class="theory-dates">Jeffrey Shandler · 2017</div>
+      </div>
+      <div>
+        <div class="theory-concept">Память о Холокосте в цифровую эпоху</div>
+        <div class="theory-body">
+          <p>Шандлер вводит понятие «Holocaust memory in the digital age» как отдельной области исследований. Цифровые технологии не просто переносят память в новую среду — они трансформируют саму структуру памяти: от линейного нарратива к базе данных, от коллективного к персонализированному, от регионального к глобальному.</p>
+          <p>USC Shoah Foundation как институция воплощает эту трансформацию: архив свидетельств становится живым интерфейсом, доступным в режиме реального времени любому пользователю с интернет-соединением.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="carousel-nav">
+      <button class="carousel-dot active" onclick="goSlide(0)"></button>
+      <button class="carousel-dot" onclick="goSlide(1)"></button>
+      <button class="carousel-dot" onclick="goSlide(2)"></button>
+      <button class="carousel-dot" onclick="goSlide(3)"></button>
+      <button class="carousel-dot" onclick="goSlide(4)"></button>
+      <button class="carousel-arrow" onclick="prevSlide()">←</button>
+      <button class="carousel-arrow" onclick="nextSlide()">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- POLL -->
+<section style="max-width:1200px;margin:0 auto;padding:6rem 6vw;border-bottom:0.5px solid var(--border)">
+  <div class="section-label">// 08 — позиция</div>
+  <h2>Ваша точка зрения</h2>
+  <p>После знакомства с проектами и теоретическими рамками — как вы оцениваете потенциал игр как медиума памяти о Холокосте?</p>
+
+  <div class="poll-wrap">
+    <div class="poll-question">Могут ли видеоигры быть легитимным медиумом памяти о Холокосте?</div>
+    <div class="poll-options" id="poll">
+      <button class="poll-btn" onclick="vote(0)">
+        <div class="poll-bar" id="bar-0"></div>
+        Да — при условии строгого институционального контроля и педагогического контекста
+      </button>
+      <button class="poll-btn" onclick="vote(1)">
+        <div class="poll-bar" id="bar-1"></div>
+        Только образовательные игры — коммерческий экшен недопустим
+      </button>
+      <button class="poll-btn" onclick="vote(2)">
+        <div class="poll-bar" id="bar-2"></div>
+        Нет — игровые механики несовместимы с памятью о Холокосте
+      </button>
+      <button class="poll-btn" onclick="vote(3)">
+        <div class="poll-bar" id="bar-3"></div>
+        Вопрос некорректен: важна цель и контекст, а не медиум
+      </button>
+    </div>
+    <div class="poll-total" id="poll-total"></div>
+  </div>
+</section>
+
+<!-- ARCHIVE -->
+<section id="archive" style="max-width:1200px;margin:0 auto;padding:6rem 6vw;border-bottom:0.5px solid var(--border)">
+  <div class="section-label">// 09 — архив источников</div>
+  <h2>Библиография и ресурсы</h2>
+  <p>Академические источники, на которые опирается исследование, и ссылки на изучаемые проекты.</p>
+
+  <div class="archive-grid">
+    <div class="archive-item">
+      <div class="archive-type">Монография · Memory Studies</div>
+      <div class="archive-title">Prosthetic Memory: The Transformation of American Remembrance</div>
+      <div class="archive-author">Alison Landsberg, 2004. Columbia University Press.</div>
+    </div>
+    <div class="archive-item">
+      <div class="archive-type">Монография · Postmemory</div>
+      <div class="archive-title">The Generation of Postmemory: Writing and Visual Culture After the Holocaust</div>
+      <div class="archive-author">Marianne Hirsch, 2012. Columbia University Press.</div>
+    </div>
+    <div class="archive-item">
+      <div class="archive-type">Статья · VR Ethics</div>
+      <div class="archive-title">Cinematic VR and the Promise of 'Presence' in Holocaust Testimony</div>
+      <div class="archive-author">Victoria Grace Walden, 2019. Holocaust and Genocide Studies.</div>
+    </div>
+    <div class="archive-item">
+      <div class="archive-type">Монография · Digital Memory</div>
+      <div class="archive-title">Holocaust Memory in the Digital Age: Survivors' Testimonies and the Challenges of the New Media Era</div>
+      <div class="archive-author">Jeffrey Shandler, 2017. Stanford University Press.</div>
+    </div>
+    <div class="archive-item">
+      <div class="archive-type">Монография · Simulation</div>
+      <div class="archive-title">Симулякры и симуляция (Simulacra and Simulation)</div>
+      <div class="archive-author">Жан Бодрийяр, 1981. Рус. пер.: «Постум», 2011.</div>
+    </div>
+    <div class="archive-item">
+      <div class="archive-type">Статья · Game Studies</div>
+      <div class="archive-title">Videogames of the Oppressed: Videogames as a Means for Critical Thinking and Debate</div>
+      <div class="archive-author">Gonzalo Frasca, 2001. Georgia Institute of Technology.</div>
+    </div>
+    <div class="archive-item">
+      <div class="archive-type">Проект · USC Shoah Foundation</div>
+      <div class="archive-title">Dimensions in Testimony — интерактивный биографический проект</div>
+      <div class="archive-author">USC Institute for Creative Technologies, 2012–.</div>
+      <a href="https://sfi.usc.edu/dit" target="_blank">→ sfi.usc.edu/dit</a>
+    </div>
+    <div class="archive-item">
+      <div class="archive-type">Проект · Яд Вашем</div>
+      <div class="archive-title">База данных имён жертв Холокоста</div>
+      <div class="archive-author">Яд Вашем, Иерусалим, 1993–.</div>
+      <a href="https://yvng.yadvashem.org/" target="_blank">→ yvng.yadvashem.org</a>
+    </div>
+    <div class="archive-item">
+      <div class="archive-type">Проект · VR</div>
+      <div class="archive-title">The Last Goodbye — VR documentary</div>
+      <div class="archive-author">Gabo Arora / USC Shoah Foundation, 2017. Cannes XR.</div>
+      <a href="https://www.oculus.com/experiences/rift/1532388296800975/" target="_blank">→ Oculus Store</a>
+    </div>
+    <div class="archive-item">
+      <div class="archive-type">Статья · Holocaust Studies</div>
+      <div class="archive-title">Selling the Holocaust: From Auschwitz to Schindler</div>
+      <div class="archive-author">Tim Cole, 1999. Routledge. — о коммерциализации памяти.</div>
+    </div>
+    <div class="archive-item">
+      <div class="archive-type">Монография · Media Theory</div>
+      <div class="archive-title">Понимание медиа: внешние расширения человека</div>
+      <div class="archive-author">Маршалл Маклюэн, 1964. Рус. пер.: «Кучково поле», 2003.</div>
+    </div>
+    <div class="archive-item">
+      <div class="archive-type">Монография · Media Archaeology</div>
+      <div class="archive-title">What is Media Archaeology?</div>
+      <div class="archive-author">Jussi Parikka, 2012. Polity Press.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONCLUSION -->
+<section style="max-width:800px;margin:0 auto;padding:6rem 6vw;">
+  <div class="section-label">// 10 — заключение</div>
+  <h2>Два регистра — одна память</h2>
+  <p>VR-свидетельство и видеоигра — не конкурирующие, а дополняющие друг друга медиумы цифровой памяти о Холокосте. Первый стремится к близости и аутентичности через «иллюзию присутствия»; второй — к агентности и идентификации через интерактивный нарратив.</p>
+  <p>Оба порождают специфические этические риски. VR рискует превратиться в «туризм в трагедию» — симуляцию сочувствия без реального обязательства. Игры рискуют тривиализировать трагедию через игровые механики, несовместимые с масштабом события.</p>
+  <p>Вопрос не в том, можно ли «играть в память». Вопрос в том, <strong>при каких условиях</strong> игровой медиум способен выполнять подлинную мемориальную функцию — и где эта функция замещается симулякром (Бодрийяр) или протезной памятью без обязательства (Лэндсберг, Уолден).</p>
+
+  <blockquote>
+    Цифровая память не заменяет и не упраздняет физический мемориал. Она создаёт новый режим работы с прошлым — более доступный, но и более уязвимый к коммерциализации, упрощению и потере свидетелей.
+    <cite>— Выводы проекта</cite>
+  </blockquote>
+</section>
+
+<footer>
+  История и память в цифровую эпоху · Медиапроект · ВШЭ Санкт-Петербург
+</footer>
+
+<script>
+// TIMELINE DATA
+const tlData = [
+  {
+    title: "USC Shoah Foundation (1994)",
+    text: "После съёмок «Списка Шиндлера» Стивен Спилберг основал Фонд с целью записать свидетельства выживших. За 10 лет записаны показания 53 000 человек в 56 странах на 32 языках. Проект заложил основу крупнейшего в мире видеоархива свидетельств о Холокосте.",
+    link: '<a href="https://sfi.usc.edu" target="_blank">→ sfi.usc.edu</a>'
+  },
+  {
+    title: "Онлайн-мемориалы 2000-х",
+    text: "Яд Вашем и United States Holocaust Memorial Museum переходят в онлайн. Впервые цифровые архивы становятся доступны широкой публике. Появляются базы данных имён — возможность найти родственников, погибших в Холокосте, из любой точки мира.",
+    link: '<a href="https://www.ushmm.org" target="_blank">→ ushmm.org</a>'
+  },
+  {
+    title: "Dimensions in Testimony (2012→)",
+    text: "Прорывной проект USC: интерактивный AI-диалог с Пинхасом Гутером, выжившим в Освенциме. Система обрабатывает вопросы на естественном языке и отвечает видеозаписями из архива. Порождает острый этический вопрос: может ли алгоритм говорить от имени живого (а затем умершего) человека?",
+    link: '<a href="https://sfi.usc.edu/dit" target="_blank">→ USC Shoah Foundation DIT</a>'
+  },
+  {
+    title: "The Last Goodbye (2017)",
+    text: "Первый значимый VR-опыт о Холокосте, показанный в Каннах. Пользователь «посещает» место заключения вместе с выжившей Рене Со-Брайтман. Открыл дискуссию о «иллюзии присутствия» и границе между эмпатией и вуайеризмом в документальном VR.",
+    link: '<a href="https://www.oculus.com/experiences/rift/1532388296800975/" target="_blank">→ Oculus Store</a>'
+  },
+  {
+    title: "Through a Glass Darkly (2018)",
+    text: "Образовательная адвенчура, разработанная при участии историков и мемориальных организаций. Игрок проживает несколько историй в оккупированной Европе. Используется в школах как педагогический инструмент. Стала образцом «этичной» игры о Холокосте.",
+    link: ''
+  },
+  {
+    title: "Дискуссия о Wolfenstein (2019)",
+    text: "Выход Wolfenstein II (2017) с открытым политическим высказыванием против американского неонацизма спровоцировал масштабную дискуссию. Вопрос о том, делает ли игровое уничтожение нацистов память о Холокосте или эксплуатирует её, вышел в mainstream-медиа. В Германии игры серии были запрещены до 2018 года.",
+    link: '<a href="https://www.wolfenstein.com" target="_blank">→ wolfenstein.com</a>'
+  },
+  {
+    title: "Into Darkness: Яд Вашем × Minecraft (2024)",
+    text: "Яд Вашем запустил официальный образовательный Minecraft-мир, посвящённый Холокосту. Решение вызвало острые споры: одни видят в нём единственный способ достучаться до поколения, воспитанного на блочном мире; другие — кощунственное упрощение. Проект работает через Minecraft Education.",
+    link: '<a href="https://www.yadvashem.org" target="_blank">→ yadvashem.org</a>'
+  }
+];
+
+function showTL(idx) {
+  document.querySelectorAll('.tl-item').forEach((el, i) => el.classList.toggle('active', i === idx));
+  const card = document.getElementById('tl-card');
+  document.getElementById('tl-card-title').textContent = tlData[idx].title;
+  document.getElementById('tl-card-text').textContent = tlData[idx].text;
+  document.getElementById('tl-card-link').innerHTML = tlData[idx].link;
+  card.classList.add('visible');
+}
+
+// TABS
+function showTab(id) {
+  document.querySelectorAll('.compare-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.compare-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// CHARTS
+window.addEventListener('load', () => {
+  const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const textColor = isDark ? '#a09890' : '#6b635a';
+  const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+
+  // Scatter
+  new Chart(document.getElementById('scatterChart'), {
+    type: 'scatter',
+    data: {
+      datasets: [
+        {
+          label: 'VR-проекты',
+          data: [
+            { x: 10, y: 20, label: 'Dimensions in Testimony' },
+            { x: 15, y: 30, label: 'The Last Goodbye' },
+            { x: 8, y: 15, label: 'Яд Вашем онлайн' }
+          ],
+          backgroundColor: 'rgba(91,138,181,0.8)',
+          pointRadius: 7,
+          pointHoverRadius: 9
+        },
+        {
+          label: 'Игры',
+          data: [
+            { x: 75, y: 40, label: 'Through a Glass Darkly' },
+            { x: 95, y: 80, label: 'Wolfenstein II' },
+            { x: 60, y: 55, label: 'Into Darkness (Minecraft)' },
+            { x: 85, y: 70, label: 'Wolfenstein (1981)' }
+          ],
+          backgroundColor: 'rgba(90,144,112,0.8)',
+          pointRadius: 7,
+          pointHoverRadius: 9
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ctx.raw.label + ` (A:${ctx.raw.x}, R:${ctx.raw.y})`
+          }
+        }
+      },
+      scales: {
+        x: {
+          title: { display: true, text: 'Агентность →', color: textColor, font: { size: 11 } },
+          min: 0, max: 100,
+          grid: { color: gridColor },
+          ticks: { color: textColor, font: { size: 10 } }
+        },
+        y: {
+          title: { display: true, text: 'Этический риск →', color: textColor, font: { size: 11 } },
+          min: 0, max: 100,
+          grid: { color: gridColor },
+          ticks: { color: textColor, font: { size: 10 } }
+        }
+      }
+    }
+  });
+
+  // Bar
+  new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Музей\n(физич.)', 'Онлайн\nархив', 'VR\nМузей', 'Образ.\nигра', 'Minecraft\nEdu', 'AAA\nигра'],
+      datasets: [
+        {
+          label: 'Потенциальный охват (усл.)',
+          data: [15, 60, 25, 45, 70, 95],
+          backgroundColor: [
+            'rgba(160,120,64,0.6)',
+            'rgba(160,120,64,0.6)',
+            'rgba(91,138,181,0.6)',
+            'rgba(90,144,112,0.6)',
+            'rgba(74,138,138,0.6)',
+            'rgba(196,92,74,0.6)'
+          ],
+          borderColor: [
+            'rgba(160,120,64,1)',
+            'rgba(160,120,64,1)',
+            'rgba(91,138,181,1)',
+            'rgba(90,144,112,1)',
+            'rgba(74,138,138,1)',
+            'rgba(196,92,74,1)'
+          ],
+          borderWidth: 0.5
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        x: {
+          grid: { color: gridColor },
+          ticks: { color: textColor, font: { size: 10 }, maxRotation: 0 }
+        },
+        y: {
+          grid: { color: gridColor },
+          ticks: { color: textColor, font: { size: 10 } },
+          title: { display: true, text: 'Охват (условные ед.)', color: textColor, font: { size: 10 } }
+        }
+      }
+    }
+  });
+});
+
+// ETHICAL COMPASS
+const verdicts = [
+  {
+    zone: '● Легитимная память',
+    zoneColor: '#5a9070',
+    title: 'Документальное свидетельство',
+    desc: 'Проект опирается на архивные источники, ограничивает агентность пользователя до роли свидетеля и функционирует в некоммерческом музейном контексте. Это ближайший к традиционной мемориальной практике цифровой формат.',
+    barColor: '#5a9070',
+    barWidth: '30%'
+  },
+  {
+    zone: '◐ Серая зона',
+    zoneColor: '#c9a96e',
+    title: 'Образовательная интерактивность',
+    desc: 'Проект предоставляет пользователю значительную агентность в художественно реконструированной среде, но сохраняет образовательный контекст и некоммерческую цель. Этически допустим при наличии методического сопровождения.',
+    barColor: '#c9a96e',
+    barWidth: '60%'
+  },
+  {
+    zone: '● Эксплуатация травмы',
+    zoneColor: '#c45c4a',
+    title: 'Коммерческая фикционализация',
+    desc: 'Высокая агентность в далёком от исторических документов нарративе, реализованная в коммерческом контексте. Память о Холокосте используется как декорация или как моральное оправдание геймплея. Граница допустимого пересечена.',
+    barColor: '#c45c4a',
+    barWidth: '90%'
+  }
+];
+
+function updateCompass() {
+  const a = parseInt(document.getElementById('s-agency').value);
+  const d = parseInt(document.getElementById('s-distance').value);
+  const c = parseInt(document.getElementById('s-commercial').value);
+  document.getElementById('v-agency').textContent = a;
+  document.getElementById('v-distance').textContent = d;
+  document.getElementById('v-commercial').textContent = c;
+  const score = (a * 0.35 + d * 0.35 + c * 0.3);
+  let idx = 0;
+  if (score > 55) idx = 2;
+  else if (score > 28) idx = 1;
+  const v = verdicts[idx];
+  document.getElementById('verdict-zone').textContent = v.zone;
+  document.getElementById('verdict-zone').style.color = v.zoneColor;
+  document.getElementById('verdict-title').textContent = v.title;
+  document.getElementById('verdict-title').style.color = v.zoneColor;
+  document.getElementById('verdict-desc').textContent = v.desc;
+  document.getElementById('verdict-bar').style.background = v.barColor;
+  document.getElementById('verdict-bar').style.width = v.barWidth;
+  document.getElementById('verdict-box').style.borderColor = v.zoneColor + '55';
+  document.getElementById('zone-leg').classList.toggle('lit', idx === 0);
+  document.getElementById('zone-grey').classList.toggle('lit', idx === 1);
+  document.getElementById('zone-dan').classList.toggle('lit', idx === 2);
+}
+updateCompass();
+
+// CAROUSEL
+let currentSlide = 0;
+const slides = document.querySelectorAll('.theory-slide');
+const dots = document.querySelectorAll('.carousel-dot');
+function goSlide(n) {
+  slides[currentSlide].classList.remove('active');
+  dots[currentSlide].classList.remove('active');
+  currentSlide = (n + slides.length) % slides.length;
+  slides[currentSlide].classList.add('active');
+  dots[currentSlide].classList.add('active');
+}
+function nextSlide() { goSlide(currentSlide + 1); }
+function prevSlide() { goSlide(currentSlide - 1); }
+
+// POLL
+let votes = [0, 0, 0, 0];
+let voted = false;
+function vote(idx) {
+  if (voted) return;
+  voted = true;
+  votes[idx]++;
+  const total = votes.reduce((a, b) => a + b, 0);
+  const btns = document.querySelectorAll('.poll-btn');
+  btns.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === idx) btn.classList.add('selected');
+    const pct = Math.round(votes[i] / total * 100);
+    document.getElementById('bar-' + i).style.width = pct + '%';
+    const res = document.createElement('div');
+    res.className = 'poll-result';
+    res.textContent = pct + '%';
+    btn.appendChild(res);
+  });
+  document.getElementById('poll-total').textContent = `Всего голосов: ${total}`;
+}
+</script>
+</body>
+</html>
