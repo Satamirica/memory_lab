@@ -1533,27 +1533,61 @@ function goSlide(n) {
 function nextSlide() { goSlide(currentSlide + 1); }
 function prevSlide() { goSlide(currentSlide - 1); }
 
-// POLL
-let votes = [0, 0, 0, 0];
-let voted = false;
-function vote(idx) {
-  if (voted) return;
-  voted = true;
-  votes[idx]++;
-  const total = votes.reduce((a, b) => a + b, 0);
+// POLL — Supabase
+const SB_URL = 'https://ocejvgoapzwgpmpqwhsc.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZWp2Z29hcHp3Z3BtcHF3aHNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMjQ0NTYsImV4cCI6MjA5NTgwMDQ1Nn0.sbbLPmdr2qrGAzHiZJkIBdPfHoXt0OyYDUdPKWm6TmU';
+const HEADERS = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
+
+let voted = localStorage.getItem('poll_voted') === '1';
+
+async function loadVotes() {
+  try {
+    const res = await fetch(`${SB_URL}/rest/v1/poll_votes?select=option_index,count`, { headers: HEADERS });
+    const rows = await res.json();
+    const counts = [0, 0, 0, 0];
+    rows.forEach(r => { if (r.option_index >= 0 && r.option_index <= 3) counts[r.option_index]++; });
+    renderPoll(counts, voted ? localStorage.getItem('poll_choice') : null);
+  } catch(e) { console.log('Poll load error', e); }
+}
+
+function renderPoll(counts, chosenIdx) {
+  const total = counts.reduce((a, b) => a + b, 0);
   const btns = document.querySelectorAll('.poll-btn');
   btns.forEach((btn, i) => {
-    btn.disabled = true;
-    if (i === idx) btn.classList.add('selected');
-    const pct = Math.round(votes[i] / total * 100);
+    btn.disabled = !!chosenIdx || chosenIdx === 0;
+    if (String(i) === String(chosenIdx)) btn.classList.add('selected');
+    const pct = total > 0 ? Math.round(counts[i] / total * 100) : 0;
     document.getElementById('bar-' + i).style.width = pct + '%';
-    const res = document.createElement('div');
-    res.className = 'poll-result';
-    res.textContent = pct + '%';
-    btn.appendChild(res);
+    const existing = btn.querySelector('.poll-result');
+    if (existing) existing.remove();
+    if (chosenIdx !== null) {
+      const res = document.createElement('div');
+      res.className = 'poll-result';
+      res.textContent = pct + '%';
+      btn.appendChild(res);
+    }
   });
-  document.getElementById('poll-total').textContent = `Всего голосов: ${total}`;
+  if (total > 0 && chosenIdx !== null) {
+    document.getElementById('poll-total').textContent = `Всего голосов: ${total}`;
+  }
 }
+
+async function vote(idx) {
+  if (voted) return;
+  voted = true;
+  localStorage.setItem('poll_voted', '1');
+  localStorage.setItem('poll_choice', idx);
+  try {
+    await fetch(`${SB_URL}/rest/v1/poll_votes`, {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify({ option_index: idx })
+    });
+  } catch(e) { console.log('Vote error', e); }
+  loadVotes();
+}
+
+loadVotes();
 </script>
 </body>
 </html>
