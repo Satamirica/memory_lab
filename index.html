@@ -1948,8 +1948,6 @@ function renderPoll(counts, chosenIdx) {
 async function vote(idx) {
   if (voted) return;
   voted = true;
-  localStorage.setItem('poll_voted', '1');
-  localStorage.setItem('poll_choice', idx);
   try {
     const post = async () => fetch(`${SB_URL}/rest/v1/poll_votes`, {
       method: 'POST',
@@ -1957,8 +1955,17 @@ async function vote(idx) {
       body: JSON.stringify({ option_index: idx })
     });
     let res = await post();
-    if (!res.ok) await post();
-  } catch(e) { console.log('Vote error', e); }
+    if (!res.ok) res = await post();
+    if (res.ok) {
+      localStorage.setItem('poll_voted', '1');
+      localStorage.setItem('poll_choice', idx);
+    } else {
+      voted = false;
+    }
+  } catch(e) {
+    voted = false;
+    console.log('Vote error', e);
+  }
   loadVotes();
 }
 
