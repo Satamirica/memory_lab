@@ -1951,11 +1951,13 @@ async function vote(idx) {
   localStorage.setItem('poll_voted', '1');
   localStorage.setItem('poll_choice', idx);
   try {
-    await fetch(`${SB_URL}/rest/v1/poll_votes`, {
+    const post = async () => fetch(`${SB_URL}/rest/v1/poll_votes`, {
       method: 'POST',
       headers: HEADERS,
       body: JSON.stringify({ option_index: idx })
     });
+    let res = await post();
+    if (!res.ok) await post();
   } catch(e) { console.log('Vote error', e); }
   loadVotes();
 }
