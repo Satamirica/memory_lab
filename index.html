@@ -660,6 +660,52 @@
   .zone-grey { border-color: rgba(201,169,110,0.4); color: var(--gold); background: rgba(201,169,110,0.08); }
   .zone-danger { border-color: rgba(196,92,74,0.4); color: var(--red); background: rgba(196,92,74,0.08); }
 
+  /* SOCIAL SECTION */
+  .fact-tab {
+    background: rgba(74,122,170,0.1);
+    border: 0.5px solid rgba(74,122,170,0.3);
+    border-radius: 5px;
+    color: #7aa3c8;
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.06em;
+  }
+  .fact-tab:hover, .fact-tab.s-active {
+    background: rgba(74,122,170,0.25);
+    border-color: rgba(74,122,170,0.6);
+    color: #a8c8e8;
+  }
+  .s-risk-item {
+    background: rgba(74,122,170,0.06);
+    border: 0.5px solid rgba(74,122,170,0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .s-risk-item:hover { border-color: rgba(74,122,170,0.4); }
+  .s-risk-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    font-size: 0.95rem;
+    color: #c0d0e0;
+  }
+  .s-risk-arrow { margin-left: auto; color: #7aa3c8; transition: transform 0.2s; }
+  .s-risk-item.open .s-risk-arrow { transform: rotate(180deg); }
+  .s-risk-body {
+    display: none;
+    padding: 0 1.25rem 1rem;
+    font-size: 0.88rem;
+    color: #9ab8d0;
+    line-height: 1.7;
+  }
+  .s-risk-item.open .s-risk-body { display: block; }
+
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 </style>
 </head>
@@ -869,13 +915,14 @@
 
     <div class="project-card">
       <span class="project-tag tag-edu">Новейший кейс</span>
-      <h3>Into Darkness (Яд Вашем × Minecraft)</h3>
-      <p>Яд Вашем создал официальный Minecraft-мир, посвящённый Холокосту, как образовательный инструмент для аудитории, для которой традиционные мемориальные форматы не работают. Запущен в 2024 году, вызвал острые споры.</p>
+      <h3>Яд Вашем × Minecraft (2023)</h3>
+      <p>Израильские и немецкие геймеры из коллективов Build Israel и BTE Germany при поддержке Яд Вашем построили точную виртуальную модель музея с образовательной выставкой в Minecraft. Проект представлен 27 января 2023 года — в Международный день памяти жертв Холокоста. Яд Вашем предоставил исторические материалы и провёл экскурсию для создателей.</p>
       <div class="project-meta">
-        <span>Яд Вашем</span>
-        <span>2024</span>
-        <span>Minecraft Education</span>
+        <span>Build Israel × BTE Germany</span>
+        <span>2023</span>
+        <span>При поддержке Яд Вашем</span>
       </div>
+      <a href="https://www.jpost.com/business-and-innovation/article-729670" target="_blank" class="project-link">→ Jerusalem Post</a>
     </div>
   </div>
 
@@ -885,9 +932,113 @@
   <p>Игры о Холокосте и нацизме занимают разные позиции на спектре от образовательного свидетельства до развлекательного экшена. Ниже — визуализация этого спектра по ключевым параметрам.</p>
 </section>
 
+<!-- SOCIAL MEDIA SECTION -->
+<section id="social" style="max-width:1200px;margin:0 auto;padding:6rem 6vw;border-bottom:0.5px solid var(--border);background:linear-gradient(180deg, rgba(40,50,70,0.18) 0%, transparent 100%);">
+  <div class="section-label" style="color:#7aa3c8;">// 05 — регистр третий</div>
+  <h2 style="color:#e8f0f8;">Соцсети: как мы переписываем историю,<br>того не замечая</h2>
+
+  <div style="border-left:2px solid #4a7aaa;padding:1rem 1.5rem;margin-bottom:2rem;background:rgba(74,122,170,0.07);border-radius:0 6px 6px 0;">
+    <p style="color:#c0d0e0;font-style:italic;">Сегодня значительная часть разговора о прошлом переместилась в цифровую среду. В данном формате историческая тема начинает существовать не в виде академического знания, достигаемого за счёт дискуссии, а в пространстве постоянного спора, эмоциональных всплесков и политических столкновений.</p>
+  </div>
+
+  <p style="color:#b0c4d8;">Память о Холокосте перестала быть чем-то единым и устойчивым. На одной и той же платформе рядом друг с другом сосуществуют мемориальные инициативы, академические тексты, политические лозунги, мемы и — откровенно говоря — радикальные трактовки. История в этих условиях распадается на невзаимосвязанные фрагменты, а общество ещё сильнее отдаляется от идеи общей исторической версии, получая бесконечно пополняемый набор конкурирующих интерпретаций.</p>
+
+  <p style="color:#b0c4d8;">После обострения палестино-израильского конфликта в 2023 году это стало особенно заметно. В X/Twitter проблематику Холокоста начали использовать для доказательства прямо противоположных тезисов, порой используя одни и те же исторические факты.</p>
+
+  <!-- INTERPRETATION MAP -->
+  <div style="margin:2.5rem 0;">
+    <div style="font-family:var(--mono);font-size:10px;color:#7aa3c8;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;">Карта интерпретаций: один факт — разные риторики</div>
+    <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;" id="fact-tabs">
+      <button class="fact-tab s-active" onclick="showFact(0)">Аналогия с гетто</button>
+      <button class="fact-tab" onclick="showFact(1)">Цифры жертв</button>
+      <button class="fact-tab" onclick="showFact(2)">Понятие геноцида</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;" id="fact-grid">
+      <div style="background:rgba(180,60,60,0.1);border:0.5px solid rgba(180,60,60,0.3);border-radius:8px;padding:1.25rem;">
+        <div style="font-family:var(--mono);font-size:9px;color:#c07070;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.6rem;">Правая риторика</div>
+        <div style="font-size:0.88rem;color:#d0b0b0;line-height:1.6;" id="right-text">«Евреи в гетто — это защита уникального народа от внешней угрозы. Нынешние "гетто" — добровольные общины, их нельзя сравнивать.»</div>
+      </div>
+      <div style="background:rgba(74,122,170,0.12);border:0.5px solid rgba(74,122,170,0.35);border-radius:8px;padding:1.25rem;">
+        <div style="font-family:var(--mono);font-size:9px;color:#7aa3c8;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.6rem;">Академический контекст</div>
+        <div style="font-size:0.88rem;color:#b0c4d8;line-height:1.6;" id="center-text">Гетто периода Холокоста — институт принудительной изоляции с целью концентрации и последующего уничтожения. Историки фиксируют специфические условия: принудительность, лишение гражданства, системное насилие.</div>
+      </div>
+      <div style="background:rgba(60,140,100,0.1);border:0.5px solid rgba(60,140,100,0.3);border-radius:8px;padding:1.25rem;">
+        <div style="font-family:var(--mono);font-size:9px;color:#70b090;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.6rem;">Левая риторика</div>
+        <div style="font-size:0.88rem;color:#a0c8b0;line-height:1.6;" id="left-text">«Блокада Газы воспроизводит логику гетто: изоляция, ограничение передвижения, коллективное наказание. Аналогия исторически оправдана.»</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="color:#7aa3c8;margin-top:2.5rem;">На подхвате у радикалов</h3>
+  <p style="color:#b0c4d8;">Праворадикальная среда в соцсетях давно выработала собственный способ говорить о Холокосте. Он заметно отличается от классического отрицания второй половины XX века. Тогда ревизионисты пытались спорить с историческими фактами, однако теперь ставка делается на постиронию, провокацию и мемологизацию трагедии.</p>
+
+  <p style="color:#b0c4d8;">Здесь особенно показателен Ник Фуэнтес и связанные с ним онлайн-сообщества, а также лидеры мнений по типу Эндрю Тейта. Их высказывания о Холокосте нередко строились на иронии, двусмысленности и расчётливом размывании границы между политическим заявлением и троллингом. Для цифровой среды этот подход становится почти идеальной формой радикальной коммуникации: позволяет распространять экстремистские идеи, получая широкую огласку и высокий уровень вовлечённости, оставаясь при этом обычной «юмореской».</p>
+
+  <p style="color:#b0c4d8;">Не последнюю роль играет архитектура платформ. Анонимность снижает ощущение ответственности, а алгоритмы подталкивают к распространению контента, направленного на эмоциональную вовлечённость. В этой логике мем оказывается эффективнее исторического текста, а короткий провокационный пост — заметнее сложного анализа.</p>
+
+  <h3 style="color:#7aa3c8;margin-top:2rem;">Память как инструмент когнитивной борьбы</h3>
+  <p style="color:#b0c4d8;">В цифровую эпоху память о Холокосте всё чаще работает не только как часть истории, но и как инструмент информационного противостояния. Социальные сети идеально подходят для такого типа — когнитивной борьбы: позволяют быстро запускать исторические аналогии, делать их вирусными и использовать как средство делегитимации противника.</p>
+
+  <p style="color:#b0c4d8;">Взаимные обвинения в «нацизме», «фашизме», «геноциде» давно стали универсальным языком политической полемики. Для Холокоста это особенно важно: его память в западной культуре основана на высокой эмоциональной нагрузке. Именно поэтому к этой теме так охотно прибегают разные политические группы — она позволяет не просто спорить, а сразу занимать позицию морально оправданной стороны.</p>
+
+  <!-- DESACRALIZATION SCALE -->
+  <div style="margin:2.5rem 0;">
+    <div style="font-family:var(--mono);font-size:10px;color:#7aa3c8;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.2rem;">Шкала десакрализации: от мемориала к троллингу</div>
+    <div style="position:relative;height:60px;background:linear-gradient(90deg, rgba(74,122,170,0.3) 0%, rgba(201,169,110,0.3) 50%, rgba(196,92,74,0.3) 100%);border-radius:8px;border:0.5px solid var(--border2);overflow:hidden;">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;">
+        <span style="font-size:0.8rem;color:#7aa3c8;">Мемориальный текст</span>
+        <span style="font-size:0.8rem;color:#c9a96e;">Политическая риторика</span>
+        <span style="font-size:0.8rem;color:#c45c4a;">Постироничный троллинг</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0.5rem;margin-top:0.8rem;" id="scale-items">
+      <div class="scale-item" onclick="showScaleInfo(0)" style="cursor:pointer;padding:0.6rem;background:rgba(74,122,170,0.12);border:0.5px solid rgba(74,122,170,0.3);border-radius:6px;text-align:center;font-size:0.78rem;color:#7aa3c8;transition:all 0.2s;">Яд Вашем онлайн</div>
+      <div class="scale-item" onclick="showScaleInfo(1)" style="cursor:pointer;padding:0.6rem;background:rgba(74,122,170,0.08);border:0.5px solid rgba(74,122,170,0.2);border-radius:6px;text-align:center;font-size:0.78rem;color:#9ab8d0;transition:all 0.2s;">Образовательный пост</div>
+      <div class="scale-item" onclick="showScaleInfo(2)" style="cursor:pointer;padding:0.6rem;background:rgba(201,169,110,0.1);border:0.5px solid rgba(201,169,110,0.25);border-radius:6px;text-align:center;font-size:0.78rem;color:#c9a96e;transition:all 0.2s;">Политическая аналогия</div>
+      <div class="scale-item" onclick="showScaleInfo(3)" style="cursor:pointer;padding:0.6rem;background:rgba(196,92,74,0.08);border:0.5px solid rgba(196,92,74,0.2);border-radius:6px;text-align:center;font-size:0.78rem;color:#c07070;transition:all 0.2s;">Постироничный мем</div>
+      <div class="scale-item" onclick="showScaleInfo(4)" style="cursor:pointer;padding:0.6rem;background:rgba(196,92,74,0.15);border:0.5px solid rgba(196,92,74,0.35);border-radius:6px;text-align:center;font-size:0.78rem;color:#c45c4a;transition:all 0.2s;">Троллинг / отрицание</div>
+    </div>
+    <div id="scale-info" style="display:none;margin-top:1rem;padding:1rem 1.25rem;background:var(--bg3);border:0.5px solid var(--border2);border-radius:8px;font-size:0.88rem;color:#b0c4d8;line-height:1.65;"></div>
+  </div>
+
+  <h3 style="color:#7aa3c8;margin-top:2rem;">Три риска трансформации памяти</h3>
+
+  <!-- RISKS ACCORDION -->
+  <div style="display:flex;flex-direction:column;gap:0.6rem;margin-top:1rem;">
+    <div class="s-risk-item" onclick="toggleRisk(0)">
+      <div class="s-risk-head">
+        <span style="font-family:var(--mono);font-size:10px;color:#7aa3c8;letter-spacing:0.1em;">01</span>
+        <span>Упрощение истории</span>
+        <span class="s-risk-arrow">↓</span>
+      </div>
+      <div class="s-risk-body" id="risk-0">Социальные сети устроены так, что лучше всего в них живут короткие формулы, резкие сравнения и легко считываемые лозунги. На этом фоне сложные исторические процессы начинают сжиматься до нескольких символов, а смысловая глубина постепенно исчезает.</div>
+    </div>
+    <div class="s-risk-item" onclick="toggleRisk(1)">
+      <div class="s-risk-head">
+        <span style="font-family:var(--mono);font-size:10px;color:#7aa3c8;letter-spacing:0.1em;">02</span>
+        <span>Десакрализация</span>
+        <span class="s-risk-arrow">↓</span>
+      </div>
+      <div class="s-risk-body" id="risk-1">Мемы, ирония, провокативность нынче считаются хорошей формой творческой самореализации, и в этой среде Холокост может начать восприниматься как ещё один элемент информационного шума. Это особенно опасно потому, что меняется не только способ разговора о прошлом, но и эмоциональное восприятие события.</div>
+    </div>
+    <div class="s-risk-item" onclick="toggleRisk(2)">
+      <div class="s-risk-head">
+        <span style="font-family:var(--mono);font-size:10px;color:#7aa3c8;letter-spacing:0.1em;">03</span>
+        <span>Эхо-камеры и закрытые сообщества</span>
+        <span class="s-risk-arrow">↓</span>
+      </div>
+      <div class="s-risk-body" id="risk-2">Алгоритмы подбирают пользователю похожий контент, и в результате вокруг него формируется почти герметичная среда. В таком «террариуме суждений» радикальные версии прошлого приобретают дополнительную подпитку. Внутри таких пузырей распространение альтернативной и конспирологической истории не оспаривается, что приводит к омертвлению дискуссии — однако такие сообщества продолжают функционировать и выполняют вполне определённые задачи.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem;padding:1.25rem 1.5rem;background:rgba(74,122,170,0.08);border:0.5px solid rgba(74,122,170,0.2);border-radius:8px;">
+    <p style="color:#b0c4d8;margin:0;">Социальные сети стирают границу между историческим анализом и политической пропагандой. Память о Холокосте всё чаще используется как средство давления, мобилизации и идеологической самоидентификации. Именно поэтому цифровая среда не только хранит память о прошлом, но и постоянно переписывает способы его общественного восприятия.</p>
+  </div>
+</section>
+
 <!-- COMPARISON LAB -->
 <section id="lab" style="max-width:1200px;margin:0 auto;padding:6rem 6vw;border-bottom:0.5px solid var(--border)">
-  <div class="section-label">// 05 — сравнительная лаборатория</div>
+  <div class="section-label">// 06 — сравнительная лаборатория</div>
   <h2>VR против игры:<br>сравнительный анализ</h2>
   <p>Два медиума выполняют принципиально разные функции памяти. Сравнение по ключевым параметрам.</p>
 
@@ -1000,7 +1151,7 @@
       </div>
       <div class="compare-row">
         <div class="compare-label">Автор</div>
-        <div class="compare-cell">Музеи, мемориалы, академические институции (USC, Яд Вашем). Высокая институциональная ннность.</div>
+        <div class="compare-cell">Музеи, мемориалы, академические институции (USC, Яд Вашем). Высокая институциональная легитимность.</div>
         <div class="compare-cell">Инди-студии, крупные издатели, образовательные НКО. Степень институционализации варьируется.</div>
       </div>
       <div class="compare-row">
@@ -1035,7 +1186,7 @@
 
 <!-- ETHICAL COMPASS -->
 <section id="compass" style="max-width:1200px;margin:0 auto;padding:6rem 6vw;border-bottom:0.5px solid var(--border)">
-  <div class="section-label">// 06 — этический компас</div>
+  <div class="section-label">// 07 — этический компас</div>
   <h2>Где проходит граница?</h2>
   <p>Переместите слайдеры, чтобы оценить гипотетический медиапроект о Холокосте. Три параметра определяют, в какую этическую зону он попадает.</p>
 
@@ -1064,14 +1215,14 @@
       </div>
 
       <div class="zone-visual">
-        <div class="zone-box zone-legitimate" id="zone-leg">нный способ сохранения памяти</div>
+        <div class="zone-box zone-legitimate" id="zone-leg">Легитимная память</div>
         <div class="zone-box zone-grey" id="zone-grey">Серая зона</div>
         <div class="zone-box zone-danger" id="zone-dan">Эксплуатация</div>
       </div>
     </div>
 
     <div class="verdict" id="verdict-box">
-      <div class="verdict-zone" id="verdict-zone" style="color:var(--green)">● нный способ сохранения памяти</div>
+      <div class="verdict-zone" id="verdict-zone" style="color:var(--green)">● Легитимная память</div>
       <div class="verdict-title" id="verdict-title">Документальное свидетельство</div>
       <div class="verdict-desc" id="verdict-desc">Проект опирается на архивные источники, ограничивает агентность пользователя до роли свидетеля и функционирует в некоммерческом музейном контексте. Это ближайший к традиционной мемориальной практике цифровой формат.</div>
       <div class="verdict-bar" id="verdict-bar" style="background:var(--green);width:30%"></div>
@@ -1081,7 +1232,7 @@
 
 <!-- THEORY CAROUSEL -->
 <section id="theory" style="max-width:1200px;margin:0 auto;padding:6rem 6vw;border-bottom:0.5px solid var(--border)">
-  <div class="section-label">// 07 — теоретическая база</div>
+  <div class="section-label">// 08 — теоретическая база</div>
   <h2>Ключевые концепции</h2>
   <p>Проект опирается на несколько теоретических рамок из memory studies, media theory и Holocaust studies.</p>
 
@@ -1175,12 +1326,12 @@
 
 <!-- POLL -->
 <section style="max-width:1200px;margin:0 auto;padding:6rem 6vw;border-bottom:0.5px solid var(--border)">
-  <div class="section-label">// 08 — позиция</div>
+  <div class="section-label">// 09 — позиция</div>
   <h2>Ваша точка зрения</h2>
   <p>После знакомства с проектами и теоретическими рамками — как вы оцениваете потенциал игр как медиума памяти о Холокосте?</p>
 
   <div class="poll-wrap">
-    <div class="poll-question">Могут ли видеоигры быть нным медиумом памяти о Холокосте?</div>
+    <div class="poll-question">Могут ли видеоигры быть легитимным медиумом памяти о Холокосте?</div>
     <div class="poll-options" id="poll">
       <button class="poll-btn" onclick="vote(0)">
         <div class="poll-bar" id="bar-0"></div>
@@ -1205,7 +1356,7 @@
 
 <!-- ARCHIVE -->
 <section id="archive" style="max-width:1200px;margin:0 auto;padding:6rem 6vw;border-bottom:0.5px solid var(--border)">
-  <div class="section-label">// 09 — архив источников</div>
+  <div class="section-label">// 10 — архив источников</div>
   <h2>Библиография и ресурсы</h2>
   <p>Академические источники, на которые опирается исследование, и ссылки на изучаемые проекты.</p>
 
@@ -1278,7 +1429,7 @@
 
 <!-- CONCLUSION -->
 <section style="max-width:800px;margin:0 auto;padding:6rem 6vw;">
-  <div class="section-label">// 10 — заключение</div>
+  <div class="section-label">// 11 — заключение</div>
   <h2>Два регистра — одна память</h2>
   <p>VR-свидетельство и видеоигра — не конкурирующие, а дополняющие друг друга медиумы цифровой памяти о Холокосте. Первый стремится к близости и аутентичности через «иллюзию присутствия»; второй — к агентности и идентификации через интерактивный нарратив.</p>
   <p>Оба порождают специфические этические риски. VR рискует превратиться в «туризм в трагедию» — симуляцию сочувствия без реального обязательства. Игры рискуют тривиализировать трагедию через игровые механики, несовместимые с масштабом события.</p>
@@ -1468,7 +1619,7 @@ window.addEventListener('load', () => {
 // ETHICAL COMPASS
 const verdicts = [
   {
-    zone: '● нная память',
+    zone: '● Легитимная память',
     zoneColor: '#5a9070',
     title: 'Документальное свидетельство',
     desc: 'Проект опирается на архивные источники, ограничивает агентность пользователя до роли свидетеля и функционирует в некоммерческом музейном контексте. Это ближайший к традиционной мемориальной практике цифровой формат.',
@@ -1487,7 +1638,7 @@ const verdicts = [
     zone: '● Эксплуатация травмы',
     zoneColor: '#c45c4a',
     title: 'Коммерческая фикционализация',
-    desc: 'Высокая агентность в далёком от исторических документов нарративе, реализованная в коммерческом контексте. Память о Холокосте используется как декорация или как моральное ние геймплея. Граница допустимого пересечена.',
+    desc: 'Высокая агентность в далёком от исторических документов нарративе, реализованная в коммерческом контексте. Память о Холокосте используется как декорация или как моральное оправдание геймплея. Граница допустимого пересечена.',
     barColor: '#c45c4a',
     barWidth: '90%'
   }
@@ -1518,6 +1669,49 @@ function updateCompass() {
   document.getElementById('zone-dan').classList.toggle('lit', idx === 2);
 }
 updateCompass();
+
+// SOCIAL SECTION
+const factData = [
+  {
+    right: '«Евреи в гетто — это защита уникального народа от внешней угрозы. Нынешние "гетто" — добровольные общины, их нельзя сравнивать.»',
+    center: 'Гетто периода Холокоста — институт принудительной изоляции с целью концентрации и последующего уничтожения. Историки фиксируют специфические условия: принудительность, лишение гражданства, системное насилие.',
+    left: '«Блокада Газы воспроизводит логику гетто: изоляция, ограничение передвижения, коллективное наказание. Аналогия исторически оправдана.»'
+  },
+  {
+    right: '«Реальные цифры жертв значительно завышены. Шесть миллионов — политически мотивированная цифра, а не исторический факт.»',
+    center: 'Историческая наука на основе архивных данных оценивает число еврейских жертв в 5,7–6,1 млн человек. Цифры верифицированы Яд Вашем, USHMM и независимыми исследователями.',
+    left: '«Жертвы Холокоста часто упоминаются в отрыве от других жертв нацизма — ромов, поляков, советских граждан. Это иерархизация страдания.»'
+  },
+  {
+    right: '«Термин "геноцид" применяется избирательно. К западным странам и их союзникам его не применяют — это двойные стандарты.»',
+    center: 'Конвенция ООН 1948 года определяет геноцид как умысел на уничтожение группы. Применение термина — предмет юридической и исторической экспертизы, а не политического консенсуса.',
+    left: '«Отказ называть происходящее геноцидом — политически мотивированное замалчивание. Юридические критерии намеренно завышены.»'
+  }
+];
+function showFact(idx) {
+  document.querySelectorAll('.fact-tab').forEach((t,i) => t.classList.toggle('s-active', i===idx));
+  document.getElementById('right-text').textContent = factData[idx].right;
+  document.getElementById('center-text').textContent = factData[idx].center;
+  document.getElementById('left-text').textContent = factData[idx].left;
+}
+
+const scaleInfo = [
+  'Официальные мемориальные сайты, базы данных имён, академические публикации. Высокая фактическая точность, институциональный контроль, низкий охват широкой аудитории.',
+  'Просветительские публикации в соцсетях от музеев и НКО. Упрощение неизбежно, но контролируется. Цель — охватить аудиторию, не приходящую в музей.',
+  'Исторические события как аргумент в текущем политическом споре. Факты не искажаются, но вырываются из контекста и становятся оружием в дискуссии.',
+  'Ирония, мемы, двусмысленные высказывания. Формально не отрицание, но размывает эмоциональную серьёзность. Особенно эффективен для молодой аудитории.',
+  'Прямое отрицание или циничная эксплуатация. Используется для продвижения экстремистских идей под прикрытием «юмора» или «просто вопросов».'
+];
+function showScaleInfo(idx) {
+  const box = document.getElementById('scale-info');
+  box.style.display = 'block';
+  box.textContent = scaleInfo[idx];
+}
+
+function toggleRisk(idx) {
+  const item = document.querySelectorAll('.s-risk-item')[idx];
+  item.classList.toggle('open');
+}
 
 // CAROUSEL
 let currentSlide = 0;
